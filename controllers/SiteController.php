@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\EmailForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -52,6 +53,30 @@ class SiteController extends Controller
         return $this->render('index');
     }
 
+    /**
+     * вход по email
+     * @return string|\yii\web\Response
+     */
+    public function actionEmail()
+    {
+        if (!\Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        $model = new EmailForm();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            return $this->goBack();
+        } else {
+            return $this->render('email', [
+                'model' => $model,
+            ]);
+        }
+    }
+
+    /**
+     * вход для зарегистрированого пользователя
+     * @return string|\yii\web\Response
+     */
     public function actionLogin()
     {
         if (!\Yii::$app->user->isGuest) {

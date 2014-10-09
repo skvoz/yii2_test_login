@@ -5,6 +5,7 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
+
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
@@ -28,6 +29,14 @@ $config = [
             // for the mailer to send real emails.
             'useFileTransport' => true,
         ],
+        'urlManager' => array(
+            'enablePrettyUrl' => true,
+            'showScriptName' => true,
+            'rules' => array(
+                ''=> 'site/index',
+            ),
+        ),
+
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
