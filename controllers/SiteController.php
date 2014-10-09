@@ -54,7 +54,7 @@ class SiteController extends Controller
     }
 
     /**
-     * вход по email
+     * send  email
      * @return string|\yii\web\Response
      */
     public function actionEmail()
@@ -64,8 +64,11 @@ class SiteController extends Controller
         }
 
         $model = new EmailForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+        if ($model->load(Yii::$app->request->post()) && $model->email_send()) {
+            Yii::$app->session->setFlash('email_ok');
+            return $this->render('email', [
+                'model' => $model,
+            ]);
         } else {
             return $this->render('email', [
                 'model' => $model,
@@ -74,11 +77,12 @@ class SiteController extends Controller
     }
 
     /**
-     * вход для зарегистрированого пользователя
+     *login
      * @return string|\yii\web\Response
      */
     public function actionLogin()
     {
+
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
